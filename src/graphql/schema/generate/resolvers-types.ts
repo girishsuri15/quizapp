@@ -14,12 +14,19 @@ export type Scalars = {
   Float: number;
 };
 
+export type AuthPayload = {
+  __typename?: 'AuthPayload';
+  response: ResponseInfo;
+  token: Scalars['String'];
+  user: User;
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   addQuestionToQuize: ResponseInfo;
   createQuize: QuizeResponse;
   deleteQuize: ResponseInfo;
-  login: User;
+  login: AuthPayload;
   register: User;
   updateQuestionToQuize: ResponseInfo;
   updateQuize: QuizeResponse;
@@ -175,7 +182,6 @@ export type User = {
   __typename?: 'User';
   id: Scalars['ID'];
   name: Scalars['String'];
-  token: Scalars['String'];
 };
 
 export type WithIndex<TObject> = TObject & Record<string, any>;
@@ -248,6 +254,7 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = ResolversObject<{
+  AuthPayload: ResolverTypeWrapper<AuthPayload>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
   Float: ResolverTypeWrapper<Scalars['Float']>;
   ID: ResolverTypeWrapper<Scalars['ID']>;
@@ -272,6 +279,7 @@ export type ResolversTypes = ResolversObject<{
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = ResolversObject<{
+  AuthPayload: AuthPayload;
   Boolean: Scalars['Boolean'];
   Float: Scalars['Float'];
   ID: Scalars['ID'];
@@ -291,11 +299,18 @@ export type ResolversParentTypes = ResolversObject<{
   User: User;
 }>;
 
+export type AuthPayloadResolvers<ContextType = any, ParentType extends ResolversParentTypes['AuthPayload'] = ResolversParentTypes['AuthPayload']> = ResolversObject<{
+  response?: Resolver<ResolversTypes['ResponseInfo'], ParentType, ContextType>;
+  token?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  user?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = ResolversObject<{
   addQuestionToQuize?: Resolver<ResolversTypes['ResponseInfo'], ParentType, ContextType, RequireFields<MutationAddQuestionToQuizeArgs, 'data' | 'quizeId'>>;
   createQuize?: Resolver<ResolversTypes['QuizeResponse'], ParentType, ContextType, RequireFields<MutationCreateQuizeArgs, 'title'>>;
   deleteQuize?: Resolver<ResolversTypes['ResponseInfo'], ParentType, ContextType, RequireFields<MutationDeleteQuizeArgs, 'id'>>;
-  login?: Resolver<ResolversTypes['User'], ParentType, ContextType, RequireFields<MutationLoginArgs, 'input' | 'password'>>;
+  login?: Resolver<ResolversTypes['AuthPayload'], ParentType, ContextType, RequireFields<MutationLoginArgs, 'input' | 'password'>>;
   register?: Resolver<ResolversTypes['User'], ParentType, ContextType, RequireFields<MutationRegisterArgs, 'password' | 'username'>>;
   updateQuestionToQuize?: Resolver<ResolversTypes['ResponseInfo'], ParentType, ContextType, RequireFields<MutationUpdateQuestionToQuizeArgs, 'data' | 'questionId' | 'quizeId'>>;
   updateQuize?: Resolver<ResolversTypes['QuizeResponse'], ParentType, ContextType, RequireFields<MutationUpdateQuizeArgs, 'data'>>;
@@ -366,11 +381,11 @@ export type ResponseInfoResolvers<ContextType = any, ParentType extends Resolver
 export type UserResolvers<ContextType = any, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  token?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
 export type Resolvers<ContextType = any> = ResolversObject<{
+  AuthPayload?: AuthPayloadResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
   PageInfo?: PageInfoResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
