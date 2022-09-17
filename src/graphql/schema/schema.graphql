@@ -14,7 +14,7 @@ type Mutation {
   addQuestionToQuize( quizeId:ID!, data:QuestionWriteRequest!):ResponseInfo!
   updateQuestionToQuize( quizeId:ID!, questionId:ID!, data: QuestionWriteRequest!):ResponseInfo!
   register(username: String!, password: String!): User!
-  login(input: String!, password: String!): User!
+  login(input: String!, password: String!): AuthPayload!
 }
 
 enum TypeOfQuestion {
@@ -43,7 +43,11 @@ type PageInfo {
 type User {
     id: ID!
     name: String!
-    token:String!
+}
+type AuthPayload{
+    response: ResponseInfo!
+    user: User!
+    token: String!
 }
 type Quize{
     id: ID!
