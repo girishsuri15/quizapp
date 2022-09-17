@@ -1,0 +1,101 @@
+type Query {
+  me: User!
+  quizes: [Quize!]!
+  quize(id:ID!): Quize
+  quizeCreatedByUser: [Quize!]!
+  quizeAttendByUser: [Quize!]!
+  
+}
+
+type Mutation {
+  createQuize(title: String!): QuizeResponse!
+  updateQuize(data: QuizeWriteRequest!): QuizeResponse!
+  deleteQuize(id: ID!):ResponseInfo!
+  addQuestionToQuize( quizeId:ID!, data:QuestionWriteRequest!):ResponseInfo!
+  updateQuestionToQuize( quizeId:ID!, questionId:ID!, data: QuestionWriteRequest!):ResponseInfo!
+  register(username: String!, password: String!): User!
+  login(input: String!, password: String!): User!
+}
+
+enum TypeOfQuestion {
+ MultipleCorrect
+ SingleCorrect
+}
+enum Status{
+    Published
+    Delete
+    Active
+}
+
+enum ResponseCode{
+    Created
+    Modifyed
+    Deleted
+    Error
+}
+
+type PageInfo {
+  endCursor: String
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String
+}
+type User {
+    id: ID!
+    name: String!
+    token:String!
+}
+type Quize{
+    id: ID!
+    title: String!
+    questions: [Question!]!
+    score: Float!
+    pageInfo: PageInfo!
+    createdBy: User!
+}
+type Question{
+    id: ID!
+    title: String!
+    typeOfQuestion: TypeOfQuestion!
+    possibleAnswer: [String!]!
+    score: Float!
+    pageInfo: PageInfo!
+}
+
+type QuizeCreatedResult{
+    code: ResponseCode!
+    quize: Quize!
+}
+type QuizeReaderResult{
+    createdByMe: [Quize]
+    submittedByMe:[Quize]
+    global:[Quize]
+}
+
+type QuizeResponse{
+ response: ResponseInfo!
+ data: Quize
+}
+
+type ResponseInfo{
+    code: ResponseCode!
+    message: String!
+    sucess: Boolean!
+}
+input QuestionWrite{
+    id: ID!
+    title: String!
+    typeOfQuestion: TypeOfQuestion!
+    possibleAnswer: [String!]!
+}
+input QuizeWriteRequest{
+    id: ID!
+    title: String!
+    questions: [QuestionWrite!]!
+}
+input QuestionWriteRequest{
+    title: String!
+    typeOfQuestion: TypeOfQuestion!
+    possibleAnswer: [String!]!
+    answer: [String!]!
+}
