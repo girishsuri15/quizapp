@@ -9,10 +9,10 @@ type Query {
 
 type Mutation {
   createQuize(title: String!): QuizeResponse!
-  updateQuize(input: QuizeWriteRequest!): QuizeResponse!
-  deleteQuize(id:ID!):ResponseInfo!
-  addQuestionToQuize( quizeId:ID!, input:QuestionWriteRequest!):ResponseInfo!
-  updateQuestionToQuize( quizeId:ID!, questionId:ID!, input: QuestionWriteRequest!):ResponseInfo!
+  updateQuize(data: QuizeWriteRequest!): QuizeResponse!
+  deleteQuize(id: ID!):ResponseInfo!
+  addQuestionToQuize( quizeId:ID!, data:QuestionWriteRequest!):ResponseInfo!
+  updateQuestionToQuize( quizeId:ID!, questionId:ID!, data: QuestionWriteRequest!):ResponseInfo!
   register(username: String!, password: String!): User!
   login(input: String!, password: String!): User!
 }
@@ -82,13 +82,18 @@ type ResponseInfo{
     message: String!
     sucess: Boolean!
 }
-
-type QuizeWriteRequest{
+input QuestionWrite{
     id: ID!
     title: String!
-    questions: [Question!]!
+    typeOfQuestion: TypeOfQuestion!
+    possibleAnswer: [String!]!
 }
-type QuestionWriteRequest{
+input QuizeWriteRequest{
+    id: ID!
+    title: String!
+    questions: [QuestionWrite!]!
+}
+input QuestionWriteRequest{
     title: String!
     typeOfQuestion: TypeOfQuestion!
     possibleAnswer: [String!]!

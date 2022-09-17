@@ -27,7 +27,7 @@ export type Mutation = {
 
 
 export type MutationAddQuestionToQuizeArgs = {
-  input: QuestionWriteRequest;
+  data: QuestionWriteRequest;
   quizeId: Scalars['ID'];
 };
 
@@ -55,14 +55,14 @@ export type MutationRegisterArgs = {
 
 
 export type MutationUpdateQuestionToQuizeArgs = {
-  input: QuestionWriteRequest;
+  data: QuestionWriteRequest;
   questionId: Scalars['ID'];
   quizeId: Scalars['ID'];
 };
 
 
 export type MutationUpdateQuizeArgs = {
-  input: QuizeWriteRequest;
+  data: QuizeWriteRequest;
 };
 
 export type PageInfo = {
@@ -97,8 +97,14 @@ export type Question = {
   typeOfQuestion: TypeOfQuestion;
 };
 
+export type QuestionWrite = {
+  id: Scalars['ID'];
+  possibleAnswer: Array<Scalars['String']>;
+  title: Scalars['String'];
+  typeOfQuestion: TypeOfQuestion;
+};
+
 export type QuestionWriteRequest = {
-  __typename?: 'QuestionWriteRequest';
   answer: Array<Scalars['String']>;
   possibleAnswer: Array<Scalars['String']>;
   title: Scalars['String'];
@@ -135,9 +141,8 @@ export type QuizeResponse = {
 };
 
 export type QuizeWriteRequest = {
-  __typename?: 'QuizeWriteRequest';
   id: Scalars['ID'];
-  questions: Array<Question>;
+  questions: Array<QuestionWrite>;
   title: Scalars['String'];
 };
 
@@ -250,12 +255,13 @@ export type ResolversTypes = ResolversObject<{
   PageInfo: ResolverTypeWrapper<PageInfo>;
   Query: ResolverTypeWrapper<{}>;
   Question: ResolverTypeWrapper<Question>;
-  QuestionWriteRequest: ResolverTypeWrapper<QuestionWriteRequest>;
+  QuestionWrite: QuestionWrite;
+  QuestionWriteRequest: QuestionWriteRequest;
   Quize: ResolverTypeWrapper<Quize>;
   QuizeCreatedResult: ResolverTypeWrapper<QuizeCreatedResult>;
   QuizeReaderResult: ResolverTypeWrapper<QuizeReaderResult>;
   QuizeResponse: ResolverTypeWrapper<QuizeResponse>;
-  QuizeWriteRequest: ResolverTypeWrapper<QuizeWriteRequest>;
+  QuizeWriteRequest: QuizeWriteRequest;
   ResponseCode: ResponseCode;
   ResponseInfo: ResolverTypeWrapper<ResponseInfo>;
   Status: Status;
@@ -273,6 +279,7 @@ export type ResolversParentTypes = ResolversObject<{
   PageInfo: PageInfo;
   Query: {};
   Question: Question;
+  QuestionWrite: QuestionWrite;
   QuestionWriteRequest: QuestionWriteRequest;
   Quize: Quize;
   QuizeCreatedResult: QuizeCreatedResult;
@@ -285,13 +292,13 @@ export type ResolversParentTypes = ResolversObject<{
 }>;
 
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = ResolversObject<{
-  addQuestionToQuize?: Resolver<ResolversTypes['ResponseInfo'], ParentType, ContextType, RequireFields<MutationAddQuestionToQuizeArgs, 'input' | 'quizeId'>>;
+  addQuestionToQuize?: Resolver<ResolversTypes['ResponseInfo'], ParentType, ContextType, RequireFields<MutationAddQuestionToQuizeArgs, 'data' | 'quizeId'>>;
   createQuize?: Resolver<ResolversTypes['QuizeResponse'], ParentType, ContextType, RequireFields<MutationCreateQuizeArgs, 'title'>>;
   deleteQuize?: Resolver<ResolversTypes['ResponseInfo'], ParentType, ContextType, RequireFields<MutationDeleteQuizeArgs, 'id'>>;
   login?: Resolver<ResolversTypes['User'], ParentType, ContextType, RequireFields<MutationLoginArgs, 'input' | 'password'>>;
   register?: Resolver<ResolversTypes['User'], ParentType, ContextType, RequireFields<MutationRegisterArgs, 'password' | 'username'>>;
-  updateQuestionToQuize?: Resolver<ResolversTypes['ResponseInfo'], ParentType, ContextType, RequireFields<MutationUpdateQuestionToQuizeArgs, 'input' | 'questionId' | 'quizeId'>>;
-  updateQuize?: Resolver<ResolversTypes['QuizeResponse'], ParentType, ContextType, RequireFields<MutationUpdateQuizeArgs, 'input'>>;
+  updateQuestionToQuize?: Resolver<ResolversTypes['ResponseInfo'], ParentType, ContextType, RequireFields<MutationUpdateQuestionToQuizeArgs, 'data' | 'questionId' | 'quizeId'>>;
+  updateQuize?: Resolver<ResolversTypes['QuizeResponse'], ParentType, ContextType, RequireFields<MutationUpdateQuizeArgs, 'data'>>;
 }>;
 
 export type PageInfoResolvers<ContextType = any, ParentType extends ResolversParentTypes['PageInfo'] = ResolversParentTypes['PageInfo']> = ResolversObject<{
@@ -315,14 +322,6 @@ export type QuestionResolvers<ContextType = any, ParentType extends ResolversPar
   pageInfo?: Resolver<ResolversTypes['PageInfo'], ParentType, ContextType>;
   possibleAnswer?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>;
   score?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
-  title?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  typeOfQuestion?: Resolver<ResolversTypes['TypeOfQuestion'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
-
-export type QuestionWriteRequestResolvers<ContextType = any, ParentType extends ResolversParentTypes['QuestionWriteRequest'] = ResolversParentTypes['QuestionWriteRequest']> = ResolversObject<{
-  answer?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>;
-  possibleAnswer?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>;
   title?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   typeOfQuestion?: Resolver<ResolversTypes['TypeOfQuestion'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
@@ -357,13 +356,6 @@ export type QuizeResponseResolvers<ContextType = any, ParentType extends Resolve
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
-export type QuizeWriteRequestResolvers<ContextType = any, ParentType extends ResolversParentTypes['QuizeWriteRequest'] = ResolversParentTypes['QuizeWriteRequest']> = ResolversObject<{
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  questions?: Resolver<Array<ResolversTypes['Question']>, ParentType, ContextType>;
-  title?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
-
 export type ResponseInfoResolvers<ContextType = any, ParentType extends ResolversParentTypes['ResponseInfo'] = ResolversParentTypes['ResponseInfo']> = ResolversObject<{
   code?: Resolver<ResolversTypes['ResponseCode'], ParentType, ContextType>;
   message?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -383,12 +375,10 @@ export type Resolvers<ContextType = any> = ResolversObject<{
   PageInfo?: PageInfoResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   Question?: QuestionResolvers<ContextType>;
-  QuestionWriteRequest?: QuestionWriteRequestResolvers<ContextType>;
   Quize?: QuizeResolvers<ContextType>;
   QuizeCreatedResult?: QuizeCreatedResultResolvers<ContextType>;
   QuizeReaderResult?: QuizeReaderResultResolvers<ContextType>;
   QuizeResponse?: QuizeResponseResolvers<ContextType>;
-  QuizeWriteRequest?: QuizeWriteRequestResolvers<ContextType>;
   ResponseInfo?: ResponseInfoResolvers<ContextType>;
   User?: UserResolvers<ContextType>;
 }>;

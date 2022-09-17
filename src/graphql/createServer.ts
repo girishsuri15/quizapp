@@ -1,5 +1,5 @@
 import { readFileSync } from 'fs'
-import { ApolloServer } from 'apollo-server'
+import { ApolloServer } from 'apollo-server-express'
 import { Resolvers } from './schema/generate/resolvers-types'
 import path from 'path'
 
